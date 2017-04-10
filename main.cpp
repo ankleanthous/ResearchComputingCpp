@@ -40,17 +40,26 @@ int main()
   DirichletBC bc(V, u0, boundary);
 
   // Define variational forms
-      pLaplace::BilinearForm a(V, V);
-  pLaplace::LinearForm L(V);
-  auto f = std::make_shared<Source>();
+//      pLaplace::BilinearForm a(V, V);
+//  pLaplace::LinearForm L(V);
+//      auto f = std::make_shared<Source>();
 //    auto f = std::make_shared<Constant>(1.0);
+//    auto p = std::make_shared<Constant>(3.0);
+//    auto epsilon = std::make_shared<Constant>(0.0001);
+//    a.p = p;
+//    a.epsilon = epsilon;
+//  L.f = f;
+    
+    pLaplace::ResidualForm F(V);
+    auto f = std::make_shared<Constant>(1.0);
     auto p = std::make_shared<Constant>(3.0);
-    a.p = p;
-  L.f = f;
+    F.p = p;
+    F.f = f;
+
     
   // Compute solution
   Function u(V);
-  solve(a == L, u, bc);
+  solve(F == 0, u, bc);
 
   // Save solution in VTK format
   File file("pLaplace.pvd");

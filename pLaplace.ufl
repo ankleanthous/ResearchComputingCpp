@@ -1,0 +1,18 @@
+# UFL input for the pLaplace equation
+# ==================================
+
+#Defining the element
+element = FiniteElement("Lagrange", triangle, 1)
+
+#Defining Trialfunction, Testfunction and RHS function f
+u = TrialFunction(element)
+v = TestFunction(element)
+f = Coefficient(element)
+
+#Define the linear and bilinear form of the weak formulation
+a = inner(grad(u), grad(v))*dx
+L = f*v*dx
+
+# Before the form file can be used in the C++ program, it must be
+# compiled using FFC by running (on the command-line):
+#    ffc -l dolfin pLaplace.ufl

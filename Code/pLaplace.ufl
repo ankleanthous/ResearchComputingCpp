@@ -4,7 +4,7 @@
 #Defining the element
 element = FiniteElement("Lagrange", triangle, 1)
 
-#Defining Trialfunction, Testfunction and RHS function f
+#Defining Trialfunction, Testfunction and RHS function f along with parameters p and epsilon
 du = TrialFunction(element)
 u = Coefficient(element)
 v = TestFunction(element)
@@ -16,6 +16,8 @@ gamma = pow(pow(epsilon,2) + 0.5* inner(grad(u), grad(u)), 0.5*(p-2))
 
 #Define the linear and bilinear form of the weak formulation
 F = inner(gamma * grad(u), grad(v))*dx - f*v*dx
+
+#Define the Jacobian J
 J = derivative(F, u, du)
 
 # Before the form file can be used in the C++ program, it must be

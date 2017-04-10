@@ -29,23 +29,21 @@ class DirichletBoundary : public SubDomain
 
 int main()
 {
+    // Create mesh and function space
+    auto mesh = std::make_shared<UnitSquareMesh>(64, 64);
+    auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);
 
-  // Create mesh and function space
-  auto mesh = std::make_shared<UnitSquareMesh>(64, 64);
-  auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);
-
-  // Define boundary condition
-  auto u0 = std::make_shared<Constant>(0.0);
-  auto boundary = std::make_shared<DirichletBoundary>();
-  DirichletBC bc(V, u0, boundary);
-    
+    // Define boundary condition
+    auto u0 = std::make_shared<Constant>(0.0);
+    auto boundary = std::make_shared<DirichletBoundary>();
+    DirichletBC bc(V, u0, boundary);
     
     //Define solution function u
     auto u = std::make_shared<Function>(V);
     
     //Define Variatonal problem
     pLaplace::ResidualForm F(V);
-//    auto f = std::make_shared<Constant>(1.0);
+    //    auto f = std::make_shared<Constant>(1.0); 
     auto f = std::make_shared<Source>();
     auto p = std::make_shared<Constant>(3.0);
     auto epsilon = std::make_shared<Constant>(1.0e-5);
@@ -62,18 +60,19 @@ int main()
     J.epsilon = epsilon;
 
     
-// Solve Parameters
+    // Solve Parameters
     Parameters params("nonlinear_variational_solver");
     Parameters newton_params("newton_solver");
     newton_params.add("maximum_iterations", 1000);
+    //    newton_params.add("relative_tolerance", 1e-6);
     params.add(newton_params);
     
-  // Compute solution
-  solve(F == 0, *u, bc, J, params);
+    // Compute solution
+    solve(F == 0, *u, bc, J, params);
 
-  // Save solution in VTK format
-  File file("pLaplace.pvd");
-  file << *u;
+    // Save solution in VTK format
+    File file("pLaplace.pvd");
+    file << *u;
 
-  return 0;
+    return 0;
 }

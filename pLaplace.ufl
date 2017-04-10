@@ -10,11 +10,12 @@ u = Coefficient(element)
 v = TestFunction(element)
 f = Coefficient(element)
 p = Coefficient(element)
-epsilon = Constant(triangle)
+epsilon = Coefficient(element)
 
+gamma = pow(pow(epsilon,2) + 0.5* inner(grad(u), grad(u)), 0.5*(p-2))
 
 #Define the linear and bilinear form of the weak formulation
-F = inner(pow((1+u),p) * grad(u), grad(v))*dx - f*v*dx
+F = inner(gamma * grad(u), grad(v))*dx - f*v*dx
 J = derivative(F, u, du)
 
 # Before the form file can be used in the C++ program, it must be

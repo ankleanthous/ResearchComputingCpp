@@ -45,27 +45,31 @@ int main()
     
     //Define Variatonal problem
     pLaplace::ResidualForm F(V);
-    auto f = std::make_shared<Constant>(1.0);
+//    auto f = std::make_shared<Constant>(1.0);
+    auto f = std::make_shared<Source>();
     auto p = std::make_shared<Constant>(3.0);
+    auto epsilon = std::make_shared<Constant>(1.0e-5);
     F.p = p;
     F.u = u;
     F.f = f;
+    F.epsilon = epsilon;
     
 
     //Create Jacobian J = F' to be used in the nonlinear solver
     pLaplace::JacobianForm J(V,V);
     J.u = u;
     J.p = p;
+    J.epsilon = epsilon;
 
     
 // Solve Parameters
-//    Parameters params("nonlinear_variational_solver");
-//    Parameters newton_params("newton_solver");
-//    newton_params.add("relative_tolerance", 1e-6);
-//    params.add(newton_params);
+    Parameters params("nonlinear_variational_solver");
+    Parameters newton_params("newton_solver");
+    newton_params.add("maximum_iterations", 1000);
+    params.add(newton_params);
     
   // Compute solution
-  solve(F == 0, *u, bc, J);
+  solve(F == 0, *u, bc, J, params);
 
   // Save solution in VTK format
   File file("pLaplace.pvd");

@@ -38,32 +38,38 @@ int main()
   auto u0 = std::make_shared<Constant>(0.0);
   auto boundary = std::make_shared<DirichletBoundary>();
   DirichletBC bc(V, u0, boundary);
-
-  // Define variational forms
-//      pLaplace::BilinearForm a(V, V);
-//  pLaplace::LinearForm L(V);
-//      auto f = std::make_shared<Source>();
-//    auto f = std::make_shared<Constant>(1.0);
-//    auto p = std::make_shared<Constant>(3.0);
-//    auto epsilon = std::make_shared<Constant>(0.0001);
-//    a.p = p;
-//    a.epsilon = epsilon;
-//  L.f = f;
     
+    
+    //Define solution function u
+    auto u = std::make_shared<Function>(V);
+    
+    //Define Variatonal problem
     pLaplace::ResidualForm F(V);
     auto f = std::make_shared<Constant>(1.0);
     auto p = std::make_shared<Constant>(3.0);
     F.p = p;
+    F.u = u;
     F.f = f;
+    
+
+    //Create Jacobian J = F' to be used in the nonlinear solver
+    pLaplace::JacobianForm J(V,V);
+    J.u = u;
+    J.p = p;
 
     
+// Solve Parameters
+//    Parameters params("nonlinear_variational_solver");
+//    Parameters newton_params("newton_solver");
+//    newton_params.add("relative_tolerance", 1e-6);
+//    params.add(newton_params);
+    
   // Compute solution
-  Function u(V);
-  solve(F == 0, u, bc);
+  solve(F == 0, *u, bc, J);
 
   // Save solution in VTK format
   File file("pLaplace.pvd");
-  file << u;
+  file << *u;
 
   return 0;
 }

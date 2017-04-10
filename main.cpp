@@ -29,8 +29,9 @@ class DirichletBoundary : public SubDomain
 
 int main()
 {
+
   // Create mesh and function space
-  auto mesh = std::make_shared<UnitSquareMesh>(32, 32);
+  auto mesh = std::make_shared<UnitSquareMesh>(64, 64);
   auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);
 
   // Define boundary condition
@@ -39,9 +40,12 @@ int main()
   DirichletBC bc(V, u0, boundary);
 
   // Define variational forms
-  pLaplace::BilinearForm a(V, V);
+      pLaplace::BilinearForm a(V, V);
   pLaplace::LinearForm L(V);
   auto f = std::make_shared<Source>();
+//    auto f = std::make_shared<Constant>(1.0);
+    auto p = std::make_shared<Constant>(3.0);
+    a.p = p;
   L.f = f;
     
   // Compute solution

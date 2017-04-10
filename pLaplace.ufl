@@ -6,11 +6,13 @@ element = FiniteElement("Lagrange", triangle, 1)
 
 #Defining Trialfunction, Testfunction and RHS function f
 u = TrialFunction(element)
+#u = interpolate(Expression("x[0]*(1-x[0]) *x[1]*(1-x[1])"), V)
 v = TestFunction(element)
 f = Coefficient(element)
+p = Constant(triangle)
 
 #Define the linear and bilinear form of the weak formulation
-a = inner(grad(u), grad(v))*dx
+a = inner(p * grad(u), grad(v))*dx
 L = f*v*dx
 
 # Before the form file can be used in the C++ program, it must be

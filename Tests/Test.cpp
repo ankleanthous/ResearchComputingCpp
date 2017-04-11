@@ -28,7 +28,7 @@ class manufactured_solution : public Expression
 public:
     void eval(Array<double>& values, const Array<double>& x) const
     {
-        values[0] = 1 + x[0]*x[0] + x[1]*x[1];
+        values[0] = 1 + x[0]*x[0] - x[1]*x[1];
     }
 };
 
@@ -43,7 +43,7 @@ TEST_CASE("Checking input is as assigned"){
     double no_elements = 32;
     double u0 = 3.0;
     double f = -4;
-    double p = 0;
+    double p = 3;
     prob.set_values (no_elements, u0, f, p);
     REQUIRE(prob.f_input == f);
     REQUIRE(prob.no_elements == no_elements);
@@ -51,14 +51,25 @@ TEST_CASE("Checking input is as assigned"){
     REQUIRE(prob.p_input == p);
 }
 
-TEST_CASE("Manufactured Soln", "[sd]"){
+TEST_CASE("Check p is greater than 2"){
     create_problem prob;
     double no_elements = 32;
     double u0 = 3.0;
     double f = -4;
-    double p = 0;
+    double p = -2;
     prob.set_values (no_elements, u0, f, p);
-    prob.problem_solver();
+    REQUIRE(prob.p_input >2);
+
+}
+
+TEST_CASE("Manufactured Soln"){
+    create_problem prob;
+    double no_elements = 32;
+    double u0 = 3.0;
+    double f = -4;
+    double p = 2;
+    prob.set_values (no_elements, u0, f, p);
+    double ucomp = prob.problem_solver();
     
     auto mesh = std::make_shared<UnitSquareMesh>(no_elements, no_elements);
     auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);

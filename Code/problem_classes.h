@@ -10,7 +10,6 @@ class DirichletBoundary : public SubDomain
 {
     bool inside(const Array<double>& x, bool on_boundary) const
     {
-//        return x[0] < DOLFIN_EPS or x[0] > 1.0 - DOLFIN_EPS;
         return on_boundary;
     }
 };
@@ -51,7 +50,6 @@ public:
     pLaplace::ResidualForm F(V);
     
     auto f = std::make_shared<Constant>(f_input);
-//    auto f = std::make_shared<Source>(); // If a more complicated source function is desired please comment the above three commands and remove the comment on this one.
         
     auto p = std::make_shared<Constant>(p_input);
     

@@ -13,31 +13,8 @@
 
 using namespace dolfin;
 
-//// Source term (right-hand side)
-//class Source : public Expression
-//{
-//  void eval(Array<double>& values, const Array<double>& x) const
-//  {
-//    double dx = x[0] - 0.5;
-//    double dy = x[1] - 0.5;
-//    values[0] = 10*exp(-(dx*dx + dy*dy) / 0.02);
-//  }
-//};
-
-
-
 int main()
 {
-//    double number = 0;
-//    
-//    if (!(std::cin >> number))
-//    {
-//        std::cout << "That's not a number; ";
-//    }
-//    else
-//    {
-//        std::cout << "That's  a number; ";
-//    }
     
     double no_elements;
     std::cout << "Please enter number of elements (e.g. 32):\n>";
@@ -62,24 +39,11 @@ int main()
         //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
     }
     
-
     create_problem prob;
     prob.set_values(no_elements, u0_input, f_input, p_input);
     prob.problem_solver();
     
-//    // Solve Parameters
-//    Parameters params("nonlinear_variational_solver"); //to solve a nonlinear problem
-//    Parameters newton_params("newton_solver"); //use the newton method to solve the problem
-//    newton_params.add("maximum_iterations", 1000); //set number of maximum iterations
-//    //    newton_params.add("relative_tolerance", 1e-6); //set relative tolerance instead of maximum iterations
-//    params.add(newton_params);
-//    
-//    // Compute solution
-//    solve(F == 0, *u, bc, J, params);
-//    
-//    // Save solution in VTK format
-//    File file("pLaplace.pvd");
-//    file << *u;
+    
     
     return 0;
 }

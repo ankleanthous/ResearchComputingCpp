@@ -6,6 +6,7 @@
 #include <ufc.h>
 #include <iostream>
 #include "problem_classes.h"
+#include <assert.h>
 
 #include "catch.hpp"
 
@@ -39,8 +40,12 @@ int main()
     std::cin >> f_input;
     
     double p_input;
-    std::cout << "Please enter constant p value (e.g. 4.0):\n>";
+    do{
+    std::cout << "Please enter constant p value greater than 2 (e.g. 4.0):\n>";
     std::cin >> p_input;
+    }
+    while(p_input <= 2); //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
+
     
     create_problem prob;
     prob.set_values(no_elements, u0_input, f_input, p_input);

@@ -2,6 +2,7 @@
 #include "pLaplace.h"
 #include <ufc.h>
 #include <iostream>
+#include <assert.h>
 
 using namespace dolfin;
 
@@ -9,13 +10,15 @@ class DirichletBoundary : public SubDomain
 {
     bool inside(const Array<double>& x, bool on_boundary) const
     {
-        return x[0] < DOLFIN_EPS or x[0] > 1.0 - DOLFIN_EPS;
+//        return x[0] < DOLFIN_EPS or x[0] > 1.0 - DOLFIN_EPS;
+        return on_boundary;
     }
 };
 
 
 class create_problem {
-	double no_elements, u0_input, f_input, p_input;
+public:
+    double no_elements, u0_input, f_input, p_input;
 
 	public:
 		void set_values(double, double, double, double);
@@ -39,7 +42,7 @@ class create_problem {
     
     auto f = std::make_shared<Constant>(f_input);
 //    auto f = std::make_shared<Source>(); // If a more complicated source function is desired please comment the above three commands and remove the comment on this one.
-
+        
     auto p = std::make_shared<Constant>(p_input);
     auto epsilon = std::make_shared<Constant>(1.0e-5);
     F.p = p;
@@ -68,6 +71,7 @@ class create_problem {
     // Save solution in VTK format
     File file("pLaplace.pvd");
     file << *u;
+        
 };
 };
 

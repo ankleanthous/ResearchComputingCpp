@@ -44,7 +44,7 @@ int main()
     std::cout << "Please enter constant p value greater than 2 (e.g. 4.0):\n>";
     std::cin >> p_input;
     if (p_input <= 2) {
-        throw std::invalid_argument("MyFunc argument too large.");
+        throw std::invalid_argument("p should be greater than 2");
         //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
     }
     

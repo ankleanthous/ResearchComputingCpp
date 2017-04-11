@@ -7,37 +7,6 @@
 
 using namespace dolfin;
 
-//unsigned int Factorial( unsigned int number ) {
-//    return number <= 1 ? number : Factorial(number-1)*number;
-//}
-//
-//TEST_CASE( "Factorials are computed", "[factorial]" ) {
-//    REQUIRE( Factorial(1) == 1 );
-//    REQUIRE( Factorial(2) == 2 );
-//    REQUIRE( Factorial(3) == 6 );
-//    REQUIRE( Factorial(10) == 3628800 );
-//}
-
-//TEST_CASE("Area","[xxx]"){
-//    Rectangle rect;
-//    rect.set_values (3,4);
-//    REQUIRE(rect.area() == 12);
-//}
-class manufactured_solution : public Expression
-{
-public:
-    void eval(Array<double>& values, const Array<double>& x) const
-    {
-        values[0] = 1 + x[0]*x[0] - x[1]*x[1];
-    }
-};
-
-//TEST_CASE("Positive p", "[niaou]"){
-//    double a;
-//    a = 5;
-//    REQUIRE(a<5);
-//}
-
 TEST_CASE("Checking input is as assigned"){
     create_problem prob;
     double no_elements = 32;
@@ -58,25 +27,12 @@ TEST_CASE("Check p is greater than 2"){
     double f = -4;
     double p = -2;
     prob.set_values (no_elements, u0, f, p);
-    REQUIRE(prob.p_input >2);
-
+    REQUIRE( prob.p_input >2);
 }
 
-TEST_CASE("Manufactured Soln"){
+TEST_CASE("Check type of input is correct"){
     create_problem prob;
-    double no_elements = 32;
-    double u0 = 3.0;
-    double f = -4;
-    double p = 2;
-    prob.set_values (no_elements, u0, f, p);
-    double ucomp = prob.problem_solver();
-    
-    auto mesh = std::make_shared<UnitSquareMesh>(no_elements, no_elements);
-    auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);
-    auto u_exact = Function(V);
-    manufactured_solution ui;
-    u_exact.interpolate(ui);
-    REQUIRE(no_elements >0);
-//double uerror = norm(u_exact,std::string norm_type = "l2");
-    
+    REQUIRE_THROWS(prob.set_values(1,1,2,1)); //this should fail as p<2
+    REQUIRE_THROWS(prob.set_values(-1,1,2,3)); //this should fail as no_elements<0
 }
+

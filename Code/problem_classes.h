@@ -25,6 +25,16 @@ public:
 
 	int problem_solver(){
     // Create mesh and function space
+        
+    if (no_elements <= 0) {
+        throw std::invalid_argument("Number of elements should be positive");
+    }
+    if (p_input <= 2) {
+        throw std::invalid_argument("p should be greater than 2");
+    //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
+    }
+
+    // Create mesh and function space
     auto mesh = std::make_shared<UnitSquareMesh>(no_elements, no_elements);
     auto V = std::make_shared<pLaplace::FunctionSpace>(mesh);
 
@@ -44,6 +54,7 @@ public:
 //    auto f = std::make_shared<Source>(); // If a more complicated source function is desired please comment the above three commands and remove the comment on this one.
         
     auto p = std::make_shared<Constant>(p_input);
+    
     auto epsilon = std::make_shared<Constant>(1.0e-5);
     F.p = p;
     F.u = u;

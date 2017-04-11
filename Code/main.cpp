@@ -28,9 +28,23 @@ using namespace dolfin;
 
 int main()
 {
+//    double number = 0;
+//    
+//    if (!(std::cin >> number))
+//    {
+//        std::cout << "That's not a number; ";
+//    }
+//    else
+//    {
+//        std::cout << "That's  a number; ";
+//    }
+    
     double no_elements;
     std::cout << "Please enter number of elements (e.g. 32):\n>";
     std::cin >> no_elements;
+    if (no_elements <= 0) {
+        throw std::invalid_argument("Number of elements should be positive");
+    }
     
     double u0_input;
     std::cout << "Please enter constant boundary conditions (e.g. 3.0):\n>";

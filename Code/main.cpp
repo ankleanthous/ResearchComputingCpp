@@ -8,7 +8,8 @@
 #include "problem_classes.h"
 #include <assert.h>
 
-#include "catch.hpp"
+#include <stdexcept>
+#include <limits>
 
 using namespace dolfin;
 
@@ -40,13 +41,14 @@ int main()
     std::cin >> f_input;
     
     double p_input;
-    do{
     std::cout << "Please enter constant p value greater than 2 (e.g. 4.0):\n>";
     std::cin >> p_input;
+    if (p_input <= 2) {
+        throw std::invalid_argument("MyFunc argument too large.");
+        //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
     }
-    while(p_input <= 2); //p should be greater than 2. For the case p = 2 the equation reduces to the usual Laplace equation
-
     
+
     create_problem prob;
     prob.set_values(no_elements, u0_input, f_input, p_input);
     prob.problem_solver();

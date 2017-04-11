@@ -46,5 +46,19 @@ int main()
     prob.set_values(no_elements, u0_input, f_input, p_input);
     prob.problem_solver();
     
+//    // Solve Parameters
+//    Parameters params("nonlinear_variational_solver"); //to solve a nonlinear problem
+//    Parameters newton_params("newton_solver"); //use the newton method to solve the problem
+//    newton_params.add("maximum_iterations", 1000); //set number of maximum iterations
+//    //    newton_params.add("relative_tolerance", 1e-6); //set relative tolerance instead of maximum iterations
+//    params.add(newton_params);
+//    
+//    // Compute solution
+//    solve(F == 0, *u, bc, J, params);
+//    
+//    // Save solution in VTK format
+//    File file("pLaplace.pvd");
+//    file << *u;
+    
     return 0;
 }
